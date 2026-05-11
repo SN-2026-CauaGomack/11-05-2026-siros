@@ -1,3 +1,13 @@
+"""
+fetch_flights.py — SIROS/ANAC v2
+Correcoes aplicadas:
+  1. URL base corrigida: /sas/siros_api/voos (sem /api/)
+  2. Resposta da API e string JSON com duplo encode — json.loads() duplo
+  3. Campo correto da empresa: sg_empresa_icao
+  4. Parsing de data no formato DD/MM/YYYY HH:MM
+  5. Tipo de operacao extraido do campo ds_tipo_servico
+"""
+
 import json
 import os
 from datetime import datetime, timezone, timedelta
@@ -7,7 +17,7 @@ import requests
 # ── Configuracoes ─────────────────────────────────────────────────────────────
 
 # URL CORRETA — sem /api/
-API_BASE     = "https://sas.anac.gov.br/sas/siros_api&quot;
+API_BASE     = "https://sas.anac.gov.br/sas/siros_api"
 airports_env = os.environ.get("AIRPORTS", "SBCA")
 AIRPORTS     = [a.strip().upper() for a in airports_env.split(",") if a.strip()]
 
@@ -259,7 +269,7 @@ else:
             "airport_name":    nome_oficial,
             "airport_info":    aerodromo,
             "source":          "SIROS/ANAC",
-            "source_url":      "https://sas.anac.gov.br/sas/siros_api/&quot;,
+            "source_url":      "https://sas.anac.gov.br/sas/siros_api/",
             "arrivals":        chegadas,
             "departures":      partidas,
         }
